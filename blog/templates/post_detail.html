@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-xl">
+    <div class="row">
+        <div class="col-sm-8">
+             
+            <div class="card my-2 shadow">                 
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle article-imgs border" src="{{ post.author.profile.image.url }}" alt=".." height="30">
+                        <h5 class="me-2">{{object.author}}</h5>
+                        <small>{{object.date_posted|date:"d F, Y"}}</small>
+                    </div>
+                    <hr>
+                    <h2>{{object.title}}</h2>
+                    <p>{{object.content}}</p>   
+                    <div>
+                        {% if object.author == user %}
+                        <a href="{% url 'post-update' object.id %}" class="btn btn-primary">Edit <i class="bi bi-pencil-square"></i></a>
+                        <a href="{% url 'post-delete' object.id %}" class="btn btn-danger">Delete <i class="bi bi-trash"></i></a>
+                        {% endif%}
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-sm-4">
+            <div class="card position-fixed mt-5">
+                <div class="card-body">
+                    <h5>Recent Post</h5>
+                    <div class="d-flex flex-column">
+                        <a href="">Link</a>
+                        <a href="">Link</a>
+                        <a href="">Link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <div class="container">
+     {% for bot in bots %}
+        <p>{{bot.Entry}}</p>
+     {% endfor %}
+ </div>
+<div class="container-xl">
+    <div class="row">         
+        <div class="col-sm-8">
+            <div class="card my-2 shadow-sm">
+                <div class="card-body">
+                   <a href="{% url 'post-create' %}" class="text-secondary text-decoration-none">                     
+                       <p class="border-bottom m-0 pb-1 ">Click here to Create new Post </p>
+                   </a>
+               </div>
+            </div>
+            {% for post in posts %}
+            <div class="card my-2 shadow">                 
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle article-imgs border" src="{{ post.author.profile.image.url }}" alt=".." height="30">                        
+                        <a href="{% url 'user-posts' post.author.username %}" class="btn"><h5>{{post.author}}</h5></a>
+                        <small>{{post.date_posted|date:"d F, Y"}}</small>
+                    </div>
+                    <hr>
+                    <h2>{{post.title}}</h2>
+                    <p class="col-3 text-truncate">{{post.content}}</p>
+                    <a class="btn btn-primary btn-sm" href="{% url 'post-detail' post.id %}">Read more</a>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-outline-info mb-4">First</a>
+                <a href="?page={{ page_obj.previous_page_number}}" class="btn btn-outline-info mb-4">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a href="?page={{ num }}" class="btn btn-info mb-4">{{num}}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}" class="btn btn-outline-info mb-4">{{num}}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number}}" class="btn btn-outline-info mb-4">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages}}" class="btn btn-outline-info mb-4">Last</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-sm-4">
+            <div class="card position-fixed my-2">
+                <div class="card-body">
+                    <h5>Recent Post</h5>
+                    <div class="d-flex flex-column">
+
+                        <a href="">Link</a>
+                        <a href="">Link</a>
+                        <a href="">Link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
